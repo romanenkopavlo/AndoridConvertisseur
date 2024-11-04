@@ -32,23 +32,32 @@ class MainActivity : AppCompatActivity() {
 
 
         buttonBas.setOnClickListener {
-            haut = editTextHaut.text.toString().toDouble()
-            if (haut != 0.0) {
-                bas = haut * taux
-                editTextBas.text = bas.toString()
+            if (editTextHaut.text.toString().isNotEmpty()) {
+                haut = editTextHaut.text.toString().toDouble()
+                if (haut != 0.0) {
+                    bas = haut * taux
+                    editTextBas.text = bas.toString()
+                } else {
+                    Toast.makeText(applicationContext, "Valeur ne doit pas etre 0", Toast.LENGTH_LONG).show()
+                }
             } else {
-                Toast.makeText(applicationContext, "Valeur ne doit pas etre 0", Toast.LENGTH_LONG).show()
+                Toast.makeText(applicationContext, "Valeur ne doit pas etre vide", Toast.LENGTH_LONG).show()
             }
         }
 
         buttonHaut.setOnClickListener {
-            bas = editTextBas.text.toString().toDouble()
-            if (bas != 0.0) {
-                haut = bas * taux
-                editTextHaut.text = haut.toString()
+            if (editTextBas.text.toString().isNotEmpty()) {
+                bas = editTextBas.text.toString().toDouble()
+                if (bas != 0.0) {
+                    haut = bas * taux
+                    editTextHaut.text = haut.toString()
+                } else {
+                    Toast.makeText(applicationContext, "Valeur ne doit pas etre 0", Toast.LENGTH_LONG).show()
+                }
             } else {
-                Toast.makeText(applicationContext, "Valeur ne doit pas etre 0", Toast.LENGTH_LONG).show()
+                Toast.makeText(applicationContext, "Valeur ne doit pas etre vide", Toast.LENGTH_LONG).show()
             }
+
         }
     }
 
