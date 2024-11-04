@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
         <variable name="infoIhm" type="com.example.myapplication.DataForBinding"/>
@@ -42,7 +43,7 @@
                         android:ems="10"
                         android:id="@+id/editTextHaut"
                         android:layout_weight="10"
-                        android:text="@{Formatage.INSTANCE.formatage(infoCalcul.labelHaut)}"
+                        app:formatage = "@{infoCalcul.labelHaut}"
                 />
             </LinearLayout>
             <LinearLayout
@@ -95,7 +96,7 @@
                         android:ems="10"
                         android:id="@+id/editTextBas"
                         android:layout_weight="10"
-                        android:text="@{Formatage.INSTANCE.formatage(infoCalcul.labelBas)}"
+                        app:formatage="@{infoCalcul.labelBas}"
                 />
             </LinearLayout>
             <LinearLayout
