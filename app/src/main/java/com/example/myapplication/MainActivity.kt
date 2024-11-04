@@ -7,8 +7,8 @@ import androidx.databinding.DataBindingUtil
 import com.example.myapplication.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
-    private var taux:Double = 1.2
-    private val tauxEUR_USD = 1.2
+    private var taux:Double = 0.0
+    private val tauxEUR_USD = 1.09
     private val tauxEUR_UAH = 40.0
     private val tauxUSD_MXN = 20.10
     private var haut:Double = 0.0
@@ -22,10 +22,10 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-        dataCurrency = DataForBinding("Euro", "Dollar")
+        updateLabel(tauxEUR_USD, "Euro", "Dollar")
         dataCalculs = DataForCalculs("0.0", "0.0")
-        binding.infoIhm = dataCurrency
         binding.infoCalcul = dataCalculs
+        binding.euroUSD.isChecked = true
 
         binding.buttonBas.setOnClickListener {
             when {
