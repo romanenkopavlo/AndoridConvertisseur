@@ -62,7 +62,7 @@ class MainActivity : AppCompatActivity() {
         binding.euroUAH.setOnClickListener {
             updateLabel(tauxEUR_UAH, "Euro", "Grivnya")
         }
-        binding.dollarPeso .setOnClickListener {
+        binding.dollarPeso.setOnClickListener {
             updateLabel(tauxUSD_MXN, "Dollar", "Peso")
         }
     }
