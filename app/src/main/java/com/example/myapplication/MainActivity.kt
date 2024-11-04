@@ -2,63 +2,74 @@ package com.example.myapplication
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.ImageButton
-import android.widget.LinearLayout
-import android.widget.TextView
 import android.widget.Toast
+import androidx.databinding.DataBindingUtil
+import com.example.myapplication.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
-    private val taux:Double = 1.2
+    private var taux:Double = 1.2
+    private val tauxEUR_USD = 1.2
+    private val tauxEUR_UAH = 40.0
+    private val tauxUSD_MXN = 20.10
     private var haut:Double = 0.0
     private var bas:Double = 0.0
-    private lateinit var editTextHaut : TextView
-    private lateinit var editTextBas : TextView
-    private lateinit var buttonHaut : ImageButton
-    private lateinit var buttonBas : ImageButton
-    private lateinit var layoutLinearHaut: LinearLayout
-    private lateinit var layoutLinearBas: LinearLayout
-
+    private lateinit var binding : ActivityMainBinding
+    private lateinit var dataCurrency : DataForBinding
+    private lateinit var dataCalculs : DataForCalculs
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        editTextHaut = findViewById(R.id.editTextHaut)
-        editTextBas = findViewById(R.id.editTextBas)
-        buttonHaut = findViewById(R.id.buttonHaut)
-        buttonBas = findViewById(R.id.buttonBas)
-        layoutLinearHaut = findViewById(R.id.linearLayoutHaut)
-        layoutLinearBas = findViewById(R.id.linearLayoutBas)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        dataCurrency = DataForBinding("Euro", "Dollar")
+        dataCalculs = DataForCalculs("0.0", "0.0")
+        binding.infoIhm = dataCurrency
+        binding.infoCalcul = dataCalculs
 
-
-        buttonBas.setOnClickListener {
-            if (editTextHaut.text.toString().isNotEmpty()) {
-                haut = editTextHaut.text.toString().toDouble()
-                if (haut != 0.0) {
+        binding.buttonBas.setOnClickListener {
+            when {
+                binding.editTextHaut.text.toString().isNotEmpty() -> {
+                    haut = binding.editTextHaut.text.toString().toDouble()
                     bas = haut * taux
-                    editTextBas.text = bas.toString()
-                } else {
-                    Toast.makeText(applicationContext, "Valeur ne doit pas etre 0", Toast.LENGTH_LONG).show()
+                    dataCalculs = DataForCalculs(haut.toString(), bas.toString())
+                    binding.infoCalcul = dataCalculs
                 }
-            } else {
-                Toast.makeText(applicationContext, "Valeur ne doit pas etre vide", Toast.LENGTH_LONG).show()
+                binding.editTextHaut.text.toString().isEmpty() -> {
+                    Toast.makeText(applicationContext, "Convertission impossible", Toast.LENGTH_LONG).show()
+                }
             }
         }
 
-        buttonHaut.setOnClickListener {
-            if (editTextBas.text.toString().isNotEmpty()) {
-                bas = editTextBas.text.toString().toDouble()
-                if (bas != 0.0) {
-                    haut = bas * taux
-                    editTextHaut.text = haut.toString()
-                } else {
-                    Toast.makeText(applicationContext, "Valeur ne doit pas etre 0", Toast.LENGTH_LONG).show()
+        binding.buttonHaut.setOnClickListener {
+            when {
+                binding.editTextBas.text.toString().isNotEmpty() -> {
+                    bas = binding.editTextBas.text.toString().toDouble()
+                    haut = bas / taux
+                    dataCalculs = DataForCalculs(haut.toString(), bas.toString())
+                    binding.infoCalcul = dataCalculs
                 }
-            } else {
-                Toast.makeText(applicationContext, "Valeur ne doit pas etre vide", Toast.LENGTH_LONG).show()
+                binding.editTextBas.text.toString().isEmpty() -> {
+                    Toast.makeText(applicationContext, "Convertission impossible", Toast.LENGTH_LONG).show()
+                }
             }
+        }
 
+
+        binding.euroUSD.setOnClickListener {
+            updateLabel(tauxEUR_USD, "Euro", "Dollar")
+        }
+        binding.euroUAH.setOnClickListener {
+            updateLabel(tauxEUR_UAH, "Euro", "Grivnya")
+        }
+        binding.dollarPeso .setOnClickListener {
+            updateLabel(tauxUSD_MXN, "Dollar", "Peso")
         }
     }
 
+    private fun updateLabel(taux:Double, labelHaut:String, labelBas:String) {
+        this.taux = taux
+        dataCurrency = DataForBinding(labelHaut, labelBas)
+        binding.infoIhm = dataCurrency
+    }
 }
