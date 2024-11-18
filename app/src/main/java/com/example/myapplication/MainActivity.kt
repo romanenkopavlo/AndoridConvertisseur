@@ -2,29 +2,37 @@ package com.example.myapplication
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.example.myapplication.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
-    private var taux:Double = 0.0
     private val tauxEUR_USD = 1.09
+    private var taux:Double = tauxEUR_USD
     private val tauxEUR_UAH = 40.0
     private val tauxUSD_MXN = 20.10
     private var haut:Double = 0.0
     private var bas:Double = 0.0
     private lateinit var binding : ActivityMainBinding
-    private lateinit var dataCurrency : DataForBinding
-    private lateinit var dataCalculs : DataForCalculs
+    private lateinit var dataViewModel: DataViewModel
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-        updateLabel(tauxEUR_USD, "Euro", "Dollar")
-        dataCalculs = DataForCalculs("0.0", "0.0")
-        binding.infoCalcul = dataCalculs
+        dataViewModel = ViewModelProvider(this).get(DataViewModel::class.java)
+        binding.infoModel = dataViewModel
+        binding.lifecycleOwner = this@MainActivity
+        dataViewModel.initData()
+
+        dataViewModel.data.observe(this, Observer<Data> { data ->
+            Log.i("observe", "Observer $data.toString()")
+        })
+
         binding.euroUSD.isChecked = true
 
         binding.buttonBas.setOnClickListener {
@@ -32,8 +40,7 @@ class MainActivity : AppCompatActivity() {
                 binding.editTextHaut.text.toString().isNotEmpty() -> {
                     haut = binding.editTextHaut.text.toString().toDouble()
                     bas = haut * taux
-                    dataCalculs = DataForCalculs(haut.toString(), bas.toString())
-                    binding.infoCalcul = dataCalculs
+                    dataViewModel.updateData(Data(null, null, haut, bas))
                 }
                 binding.editTextHaut.text.toString().isEmpty() -> {
                     Toast.makeText(applicationContext, "Convertission impossible", Toast.LENGTH_LONG).show()
@@ -46,15 +53,13 @@ class MainActivity : AppCompatActivity() {
                 binding.editTextBas.text.toString().isNotEmpty() -> {
                     bas = binding.editTextBas.text.toString().toDouble()
                     haut = bas / taux
-                    dataCalculs = DataForCalculs(haut.toString(), bas.toString())
-                    binding.infoCalcul = dataCalculs
+                    dataViewModel.updateData(Data(null, null, haut, bas))
                 }
                 binding.editTextBas.text.toString().isEmpty() -> {
                     Toast.makeText(applicationContext, "Convertission impossible", Toast.LENGTH_LONG).show()
                 }
             }
         }
-
 
         binding.euroUSD.setOnClickListener {
             updateLabel(tauxEUR_USD, "Euro", "Dollar")
@@ -69,7 +74,6 @@ class MainActivity : AppCompatActivity() {
 
     private fun updateLabel(taux:Double, labelHaut:String, labelBas:String) {
         this.taux = taux
-        dataCurrency = DataForBinding(labelHaut, labelBas)
-        binding.infoIhm = dataCurrency
+        dataViewModel.updateData(Data(labelHaut, labelBas, null, null))
     }
 }

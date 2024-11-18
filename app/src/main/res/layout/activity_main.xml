@@ -3,8 +3,7 @@
         xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-        <variable name="infoIhm" type="com.example.myapplication.DataForBinding"/>
-        <variable name="infoCalcul" type="com.example.myapplication.DataForCalculs"/>
+        <variable name="infoModel" type="com.example.myapplication.DataViewModel"/>
         <import type="com.example.myapplication.Formatage"/>
     </data>
 
@@ -32,7 +31,7 @@
                         android:layout_width="40dp"
                         android:layout_height="wrap_content"
                         android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:text="@{infoIhm.labelHaut}"
+                        android:text="@{infoModel.data.labelHaut}"
                         android:id="@+id/textViewHaut"
                         android:layout_weight="10"/>
 
@@ -43,7 +42,7 @@
                         android:ems="10"
                         android:id="@+id/editTextHaut"
                         android:layout_weight="10"
-                        app:formatage = "@{infoCalcul.labelHaut}"
+                        app:formatage = "@{infoModel.data.resultatHaut.toString()}"
                 />
             </LinearLayout>
             <LinearLayout
@@ -85,7 +84,7 @@
                         android:layout_width="40dp"
                         android:layout_height="wrap_content"
                         android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:text="@{infoIhm.labelBas}"
+                        android:text="@{infoModel.data.labelBas}"
                         android:id="@+id/textViewBas"
                         android:layout_weight="10"/>
 
@@ -96,7 +95,7 @@
                         android:ems="10"
                         android:id="@+id/editTextBas"
                         android:layout_weight="10"
-                        app:formatage="@{infoCalcul.labelBas}"
+                        app:formatage="@{infoModel.data.resultatBas.toString()}"
                 />
             </LinearLayout>
             <LinearLayout
