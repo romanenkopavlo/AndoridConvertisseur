@@ -11,9 +11,9 @@ import com.example.myapplication.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
     private val tauxEUR_USD = 1.09
-    private var taux:Double = tauxEUR_USD
     private val tauxEUR_UAH = 40.0
     private val tauxUSD_MXN = 20.10
+    private var taux:Double = tauxEUR_USD
     private var haut:Double = 0.0
     private var bas:Double = 0.0
     private lateinit var binding : ActivityMainBinding
